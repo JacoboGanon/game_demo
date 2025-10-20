@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Math Water Drop Game</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="game-container">
+      <div class="stats">
+        <div class="stat-item">
+          <span>Correct:</span>
+          <span class="correct" id="correctCount">0</span>
+        </div>
+        <div class="stat-item">
+          <span>Wrong:</span>
+          <span class="wrong" id="wrongCount">0</span>
+        </div>
+        <div class="stat-item">
+          <span>Speed:</span>
+          <span id="speedLevel">1x</span>
+        </div>
+      </div>
+
+      <canvas id="gameCanvas" width="800" height="700"></canvas>
+
+      <div class="input-container">
+        <input
+          type="number"
+          id="answerInput"
+          placeholder="Type your answer..."
+          disabled
+        />
+        <p class="hint">Press Enter to submit your answer</p>
+      </div>
+
+      <div class="description">
+        <h3>How to Play</h3>
+        <p>
+          Water drops with math equations will fall from the top. Type the
+          answer in the input box and press Enter to clear matching drops. The
+          game speeds up as you answer correctly. You win by getting
+          <strong>25 correct answers</strong>, but lose after
+          <strong>3 mistakes</strong>. Missing a drop counts as a mistake!
+        </p>
+        <button class="start-btn" id="startBtn" onclick="startGame()">
+          Start Game
+        </button>
+      </div>
+    </div>
+
+    <div class="game-over" id="gameOver">
+      <div class="game-over-content">
+        <h2 id="gameOverTitle">Game Over!</h2>
+        <p id="gameOverMessage"></p>
+        <button class="restart-btn" onclick="restartGame()">Play Again</button>
+      </div>
+    </div>
+
+    <script src="game.js"></script>
+  </body>
+</html>
