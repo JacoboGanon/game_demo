@@ -8,19 +8,24 @@
   </head>
   <body>
     <div class="game-container">
-      <div class="stats">
-        <div class="stat-item">
-          <span>Correct:</span>
-          <span class="correct" id="correctCount">0</span>
+      <div class="stats-container">
+        <div class="stats">
+          <div class="stat-item">
+            <span>Correct:</span>
+            <span class="correct" id="correctCount">0</span>
+          </div>
+          <div class="stat-item">
+            <span>Wrong:</span>
+            <span class="wrong" id="wrongCount">0</span>
+          </div>
+          <div class="stat-item">
+            <span>Speed:</span>
+            <span id="speedLevel">1x</span>
+          </div>
         </div>
-        <div class="stat-item">
-          <span>Wrong:</span>
-          <span class="wrong" id="wrongCount">0</span>
-        </div>
-        <div class="stat-item">
-          <span>Speed:</span>
-          <span id="speedLevel">1x</span>
-        </div>
+        <button class="reset-btn hidden" id="resetBtn" onclick="restartGame()">
+          🔄 Restart
+        </button>
       </div>
 
       <canvas id="gameCanvas"></canvas>

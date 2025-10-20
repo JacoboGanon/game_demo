@@ -446,6 +446,9 @@ function startGame() {
   // Hide description and start button
   document.querySelector(".description").classList.add("hidden");
 
+  // Show reset button
+  document.getElementById("resetBtn").classList.remove("hidden");
+
   // Enable input
   const inputElement = document.getElementById("answerInput");
   inputElement.disabled = false;
@@ -473,6 +476,9 @@ function restartGame() {
   // Update display
   updateStats();
   document.getElementById("gameOver").classList.remove("show");
+
+  // Hide reset button
+  document.getElementById("resetBtn").classList.add("hidden");
 
   // Show description and start button again
   const description = document.querySelector(".description");
