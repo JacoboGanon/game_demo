@@ -1,7 +1,7 @@
 // Game configuration
 const CONFIG = {
-  CANVAS_WIDTH: 800,
-  CANVAS_HEIGHT: 700,
+  BASE_CANVAS_WIDTH: 800,
+  BASE_CANVAS_HEIGHT: 700,
   DROP_RADIUS: 30,
   BASE_FALL_SPEED: 0.5,
   SPEED_INCREASE_RATE: 0.05,
@@ -27,11 +27,50 @@ const gameState = {
   cooldownActive: false,
   cooldownEndTime: 0,
   currentTimestamp: 0,
+  scale: 1, // Scaling factor for responsive design
+  canvasWidth: CONFIG.BASE_CANVAS_WIDTH,
+  canvasHeight: CONFIG.BASE_CANVAS_HEIGHT,
 };
 
 // Canvas setup
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
+
+// Responsive canvas sizing
+function resizeCanvas() {
+  const container = document.querySelector(".game-container");
+  const maxWidth = Math.min(window.innerWidth - 40, CONFIG.BASE_CANVAS_WIDTH);
+  const maxHeight = window.innerHeight - 300; // Leave room for stats and input
+
+  // Calculate scale to fit within viewport while maintaining aspect ratio
+  const scaleX = maxWidth / CONFIG.BASE_CANVAS_WIDTH;
+  const scaleY = maxHeight / CONFIG.BASE_CANVAS_HEIGHT;
+  gameState.scale = Math.min(scaleX, scaleY, 1); // Never scale up, only down
+
+  // Set canvas dimensions
+  gameState.canvasWidth = CONFIG.BASE_CANVAS_WIDTH * gameState.scale;
+  gameState.canvasHeight = CONFIG.BASE_CANVAS_HEIGHT * gameState.scale;
+
+  // Set canvas display size (CSS)
+  canvas.style.width = gameState.canvasWidth + "px";
+  canvas.style.height = gameState.canvasHeight + "px";
+
+  // Set canvas resolution (actual pixels)
+  canvas.width = CONFIG.BASE_CANVAS_WIDTH;
+  canvas.height = CONFIG.BASE_CANVAS_HEIGHT;
+}
+
+// Initialize canvas size
+resizeCanvas();
+
+// Handle window resize
+let resizeTimeout;
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(() => {
+    resizeCanvas();
+  }, 250);
+});
 
 // Audio context for sound effects
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -226,7 +265,7 @@ class WaterDrop {
   }
 
   isOffScreen() {
-    return this.y - this.radius > CONFIG.CANVAS_HEIGHT;
+    return this.y - this.radius > CONFIG.BASE_CANVAS_HEIGHT;
   }
 }
 
@@ -235,7 +274,7 @@ function spawnDrop() {
   const { equation, answer } = EquationGenerator.generate();
   // Teardrop extends 1.3x radius on each side, plus some padding for text
   const margin = CONFIG.DROP_RADIUS * 1.5;
-  const x = margin + Math.random() * (CONFIG.CANVAS_WIDTH - margin * 2);
+  const x = margin + Math.random() * (CONFIG.BASE_CANVAS_WIDTH - margin * 2);
   const y = -CONFIG.DROP_RADIUS * 1.5;
   const drop = new WaterDrop(x, y, equation, answer);
   gameState.drops.push(drop);
@@ -278,7 +317,7 @@ function update(timestamp) {
 // Render game
 function render() {
   // Clear canvas
-  ctx.clearRect(0, 0, CONFIG.CANVAS_WIDTH, CONFIG.CANVAS_HEIGHT);
+  ctx.clearRect(0, 0, CONFIG.BASE_CANVAS_WIDTH, CONFIG.BASE_CANVAS_HEIGHT);
 
   // Draw all drops
   gameState.drops.forEach((drop) => {
